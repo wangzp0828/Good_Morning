@@ -36,7 +36,7 @@ def get_back():
     return "距离上次回来已经过去%d天" % (today-next).days
 
 def get_birthday():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+  next = datetime.strptime(str(date.today().year) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
   if next < datetime.now():
     next = next.replace(year=next.year + 1)
   return (next - today).days
