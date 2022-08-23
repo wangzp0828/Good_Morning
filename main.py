@@ -22,7 +22,7 @@ def get_weather():
   url = "http://t.weather.sojson.com/api/weather/city/" + city
   res = requests.get(url).json()
   weather = res['data']['forecast'][0]
-  return weather['type'], math.floor(res['data']['wendu']), math.floor(weather['high']), math.floor(weather['low'])
+  return weather['type'], res['data']['wendu'], math.floor(weather['high']), math.floor(weather['low'])
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
