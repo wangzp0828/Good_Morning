@@ -36,16 +36,11 @@ def get_back():
     return "距离下次回来还有%d天" % (next-today).days
   else :
     return "距离上次回来已经过去%d天" % (today-next).days
-  
+
 def get_birthday():
-  next = datetime.strptime(str(date.today().year).replace(year=next.year - 1) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
-  next = next.to_datetime()
-  if next <= datetime.now():
-    next = datetime.strptime(str(date.today().year) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
-    next = next.to_datetime()
-  elif next.replace(year=next.year + 1).to_datetime()<datetime.now():
-    next = next.replace(year=next.year + 2)
-    next = next.to_datetime()
+  next = datetime.strptime(str(date.today().year) + "-" + birthday, "%Y-%m-%d")
+  if next < datetime.now():
+    next = next.replace(year=next.year + 1)
   return (next - today).days
 
 def get_words():
