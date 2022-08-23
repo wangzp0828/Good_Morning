@@ -22,7 +22,7 @@ def get_weather():
   url = "http://t.weather.sojson.com/api/weather/city/" + city
   res = requests.get(url).json()
   weather = res['data']['forecast'][0]
-  return weather['type'], res['data']['wendu'],weather['high'], weather['low']
+  return weather['type'], res['data']['wendu'],weather['high'], weather['low'], weather['notice']
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -54,8 +54,8 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature, highest, lowest = get_weather()
-data = {"weather":{"value":wea,"color":get_random_color()},"date":{"value":today.strftime("%m-%d"),"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()},"highest": {"value":highest,"color":get_random_color()},"lowest":{"value":lowest, "color":get_random_color()},"last_back":{"value":get_back(), "color":get_random_color()}}
+wea, temperature, highest, lowest,notice = get_weather()
+data = {"weather":{"value":wea,"color":get_random_color()},"notice":{"value":notice,"color":get_random_color()},"date":{"value":today.strftime("%m-%d"),"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()},"highest": {"value":highest,"color":get_random_color()},"lowest":{"value":lowest, "color":get_random_color()},"last_back":{"value":get_back(), "color":get_random_color()}}
 count = 0
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
