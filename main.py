@@ -6,7 +6,7 @@ import requests
 import os
 import random
 
-today = datetime.strftime(datetime.datetime.now().strftime('%Y-%m-%d'),'%Y-%m-%d %H:%M:%S')
+today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
@@ -29,7 +29,7 @@ def get_count():
   return delta.days
 
 def get_back():
-  next = datetime.strptime(str(date.today().year) + "-" + last_back, "%Y-%m-%d")
+  next = datetime.strptime(str(date.today().year) + "-" + last_back+' 23:59:59', "%Y-%m-%d %H:%M:%S")
   if (next-today).days>=0:
     return "距离下次回来还有%d天" % (next-today).days
   else :
