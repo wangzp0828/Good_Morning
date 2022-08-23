@@ -5,6 +5,8 @@ from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
 import os
 import random
+from zhdate import ZhDate as lunar_date
+from datetime import datetime
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
@@ -36,9 +38,14 @@ def get_back():
     return "距离上次回来已经过去%d天" % (today-next).days
   
 def get_birthday():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
-  if next < datetime.now():
-    next = next.replace(year=next.year + 1)
+  next = datetime.strptime(str(date.today().year).replace(year=next.year - 1) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
+  next = next.to_datetime()
+  if next <= datetime.now():
+    next = datetime.strptime(str(date.today().year) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
+    next = next.to_datetime()
+  elif next.replace(year=next.year + 1).to_datetime()<datetime.now():
+    next = next.replace(year=next.year + 2)
+    next = next.to_datetime()
   return (next - today).days
 
 def get_words():
