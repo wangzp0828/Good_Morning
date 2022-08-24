@@ -29,14 +29,14 @@ def get_count():
   return delta.days
 
 def get_back():
-  next = datetime.strptime(str(date.today().year) + "-" + last_back +' 23:59:59', "%Y-%m-%d %H:%M:%S")
+  next = datetime.strptime(str(date.today().year) + "-" + last_back +' 15:59:59', "%Y-%m-%d %H:%M:%S")
   if (next-today).days>=0:
     return "距离下次回来还有%d天" % (next-today).days
   else :
     return "距离上次回来已经过去%d天" % (today-next).days
 
 def get_birthday():
-  next = datetime.strptime(str(date.today().year) + "-" + birthday +' 23:59:59', "%Y-%m-%d %H:%M:%S")
+  next = datetime.strptime(str(date.today().year) + "-" + birthday +' 15:59:59', "%Y-%m-%d %H:%M:%S")
   if next < datetime.now():
     next = next.replace(year=next.year + 1)
   return (next - today).days
