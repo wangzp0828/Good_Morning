@@ -9,6 +9,7 @@ import random
 today = datetime.now()
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
+key = os.environ['KEY']
 birthday = os.environ['BIRTHDAY']
 
 app_id = os.environ["APP_ID"]
@@ -19,10 +20,10 @@ template_id = os.environ["TEMPLATE_ID"]
 last_back=os.environ["LAST_BACK"]
 
 def get_weather():
-  url = "http://t.weather.sojson.com/api/weather/city/" + city
+  url = "https://restapi.amap.com/v3/weather/weatherInfo?city="+city+"&key="+key+"&extensions=all"
   res = requests.get(url).json()
-  weather = res['data']['forecast'][0]
-  return weather['type'], res['data']['wendu'],weather['high'], weather['low'], weather['notice']
+  weather = res['forecast']['casts'][0]
+  return dayweather['dayweather'],nightweather['nightweather'], weather['nighttemp'],weather['daytemp'], weather['nightpower'], weather['daypower']
 
 def get_count():
   delta = today - datetime.strptime(start_date, "%Y-%m-%d")
@@ -54,8 +55,18 @@ def get_random_color():
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
-wea, temperature, highest, lowest,notice = get_weather()
-data = {"weather":{"value":wea,"color":get_random_color()},"notice":{"value":notice,"color":get_random_color()},"date":{"value":today.strftime("%m-%d"),"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(),"color":get_random_color()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(),"color":get_random_color()},"highest": {"value":highest,"color":get_random_color()},"lowest":{"value":lowest, "color":get_random_color()},"last_back":{"value":get_back(), "color":get_random_color()}}
+dayweather,nightweather, nighttemp, daytemp, nightpower,daypower = get_weather()
+data = {"dayweather":{"value":dayweather,"color":get_random_color()},
+        "nightweather":{"value":nightweather,"color":get_random_color()},
+        "nighttemp":{"value":nighttemp,"color":get_random_color()},
+        "date":{"value":today.strftime("%m-%d"),"color":get_random_color()},
+        "daytemp":{"value":daytemp,"color":get_random_color()},
+        "love_days":{"value":get_count(),"color":get_random_color()},
+        "birthday_left":{"value":get_birthday(),"color":get_random_color()},
+        "words":{"value":get_words(),"color":get_random_color()},
+        "nightpower": {"value":highest,"color":get_random_color()},
+        "daypower":{"value":lowest, "color":get_random_color()},
+        "last_back":{"value":get_back(), "color":get_random_color()}}
 count = 0
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
