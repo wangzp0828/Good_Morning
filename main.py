@@ -5,9 +5,10 @@ from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
 import os
 import random
+import time
 
-today = datetime.now()
-today = today.replace(hour=today.hour + 8)
+today = time.localtime(time.time()+28800)
+##today = today.replace(hour=today.hour + 8)
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 key = os.environ['KEY']
